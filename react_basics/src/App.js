@@ -1,26 +1,78 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/header';
+import {
+  Home
+} from './components/home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        homeLink: 'Home',
+        homeMounted: true
+      }
+    }
+
+    onGreet() {
+      alert('Hello there');
+    };
+
+    onChangeLink(newName) {
+      this.setState({
+        homeLink: newName
+      });
+    };
+
+    onChangeHomeMounted() {
+      this.setState({
+        homeMounted: !this.state.homeMounted
+      });
+    };
+
+
+  render() {
+    let home_component = '';
+    if (this.state.homeMounted) {
+      home_component = (
+        <Home 
+          name={'Tyler'} 
+          initial_age={27} 
+          greet={this.onGreet} 
+          changeLink = {this.onChangeLink.bind(this)}
+          homeLink = {this.state.homeLink}
+        />
+      )
+    }
+
+    return (
+      <div className='container'>
+        <div className="row">
+          <div className="col col-12">
+            {/* Header component */}
+            <Header homeLink={this.state.homeLink} />
+          </div>
+
+        </div>
+        <div className="row">
+          <div className="col col-12">
+            {/* Home component */}
+            {home_component}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col col-12">
+            <button 
+              className="btn btn-primary"
+              onClick={this.onChangeHomeMounted.bind(this)}
+              >{this.state.homeMounted ? 'Un-mount' : 'Re-mount'} Home Component</button>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
